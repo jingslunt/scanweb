@@ -1,0 +1,11 @@
+[package]
+name = "scanweb"
+version = "0.1.0"
+edition = "2018"
+publish = false
+
+[dependencies]
+curl = "0.4.44"
+url = "2.2.2"
+
+
