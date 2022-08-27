@@ -5,7 +5,7 @@ use crate::scanlib::scan_port;
 use url::Url;
 //use std::sync::mpsc;
 
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 struct Addr {
     protocol: &'static str,
     protocol_args: &'static str,
@@ -36,7 +36,8 @@ pub fn scan_command(file: &str) -> Vec<String> {
                 let url = Url::parse(&vp).expect(&vp);
                 let url_values = url.domain().unwrap().to_string();
                 let url_args_tail = url.path();
-                let mut addr = "".to_string() + domain.protocol
+                let mut addr = "".to_string()
+                    + domain.protocol
                     + domain.protocol_args
                     + &url_values
                     + domain.url_port_head
@@ -59,17 +60,14 @@ pub fn scan_command(file: &str) -> Vec<String> {
                             return vp;
                             //std::process::exit(0);
                         } else {
+                            //get fail code
+                            //https://docs.rs/curl/0.4.8/curl/easy/struct.Easy2.html
+                            // let is_ok = crate::scanlib::scan_response::scan_response(&vp);
+                            // if is_ok == false {
+                            //    print!("{} response greater than or equal to 400.\n", &vp);
+                            //   }
                             return "".to_string();
                         }
-                        //get fail code
-                        //https://docs.rs/curl/0.4.8/curl/easy/struct.Easy2.html
-                        //  let is_ok = scan_response::scan_response(&addr);
-                        //dbg!(is_ok);
-                        //  if is_ok == false {
-                        //      print!("{} bad response.\n", &vp);
-                        //    return;
-                        //exit(0);
-                        // }
                     })
                     .join()
                     .ok()
