@@ -7,5 +7,7 @@ fn main(){
     //dbg!(args.iter());
     let file=&args[1];
     let data = scan_command(file);
-    dbg!(data);
+    for i in data{
+        println!("{} is down.",&i);
+    }
 }

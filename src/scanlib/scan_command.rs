@@ -10,7 +10,7 @@ struct Addr {
     protocol: &'static str,
     protocol_args: &'static str,
     url_port: u16,
-    url_port_head: &'static str,
+    // url_port_head: &'static str,
 }
 
 pub fn scan_command(file: &str) -> Vec<String> {
@@ -19,7 +19,7 @@ pub fn scan_command(file: &str) -> Vec<String> {
         protocol: "https",
         protocol_args: "://",
         url_port: 443u16,
-        url_port_head: ":",
+        // url_port_head: ":",
     };
     let mut data = vec![];
     //let mut url_args_tail= "/404.html".to_string();
@@ -35,14 +35,14 @@ pub fn scan_command(file: &str) -> Vec<String> {
                 //let url = Url::parse(&vp).unwrap();
                 let url = Url::parse(&vp).expect(&vp);
                 let url_values = url.domain().unwrap().to_string();
-                let url_args_tail = url.path();
-                let mut addr = "".to_string()
-                    + domain.protocol
-                    + domain.protocol_args
-                    + &url_values
-                    + domain.url_port_head
-                    + &(domain.url_port.to_string())
-                    + url_args_tail;
+                //let url_args_tail = url.path();
+                //let addr = "".to_string()
+                //   + domain.protocol
+                //   + domain.protocol_args
+                //  + &url_values
+                //    + domain.url_port_head
+                //   + &(domain.url_port.to_string())
+                //    + url_args_tail;
                 num += 1;
                 if num % 5 == 0 {
                     //println!("sleep 1s.");
