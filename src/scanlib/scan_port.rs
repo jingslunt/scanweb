@@ -13,7 +13,7 @@ pub fn scan_port(host: &str, port: &u16) -> bool {
         }
     });
 
-    thread::sleep(Duration::new(3, 0));
+    thread::sleep(Duration::new(2, 0));
 
     match receiver.try_recv() {
         Ok(Ok(handle)) => true, // we have a connection
@@ -21,7 +21,7 @@ pub fn scan_port(host: &str, port: &u16) -> bool {
         Err(mpsc::TryRecvError::Empty) => {
             drop(receiver);
             drop(t);
-            // connecting took more than 3 seconds
+            // connecting took 
             false
         }
         Err(mpsc::TryRecvError::Disconnected) => unreachable!(),

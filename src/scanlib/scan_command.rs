@@ -5,12 +5,22 @@ use crate::scanlib::scan_port;
 use url::Url;
 //use std::sync::mpsc;
 
+#[derive(Copy,Clone)]
+struct Addr {
+    protocol: &'static str,
+    protocol_args: &'static str,
+    url_port: u16,
+    url_port_head: &'static str,
+}
+
 pub fn scan_command(file: &str) -> Vec<String> {
     let con = scan_conf::scan_conf(file);
-    let mut protocol = "https".to_string();
-    let protocol_args = "://";
-    let mut url_port = 443u16;
-    let url_port_head = ":";
+    let domain = Addr {
+        protocol: "https",
+        protocol_args: "://",
+        url_port: 443u16,
+        url_port_head: ":",
+    };
     let mut data = vec![];
     //let mut url_args_tail= "/404.html".to_string();
     //let mut addr= protocol + &protocol_args + &url_values + &url_port_head + &(url_port.to_string()) + &url_args_tail;
@@ -21,17 +31,17 @@ pub fn scan_command(file: &str) -> Vec<String> {
             let wait_millis = std::time::Duration::from_millis(1000);
             for v in vs {
                 //let (tx, rx) = mpsc::channel();
-                let vp = protocol.clone() + protocol_args + &v;
+                let vp = "".to_string() + domain.protocol + domain.protocol_args + &v;
                 //let url = Url::parse(&vp).unwrap();
                 let url = Url::parse(&vp).expect(&vp);
                 let url_values = url.domain().unwrap().to_string();
                 let url_args_tail = url.path();
-                let mut addr = protocol.clone()
-                    + protocol_args
+                let mut addr = "".to_string() + domain.protocol
+                    + domain.protocol_args
                     + &url_values
-                    + url_port_head
-                    + &(url_port.to_string())
-                    + &url_args_tail;
+                    + domain.url_port_head
+                    + &(domain.url_port.to_string())
+                    + url_args_tail;
                 num += 1;
                 if num % 5 == 0 {
                     //println!("sleep 1s.");
@@ -42,12 +52,12 @@ pub fn scan_command(file: &str) -> Vec<String> {
                         //println!("thread started.");
                         //get timeout
                         //https://stackoverflow.com/questions/36181719/what-is-the-correct-way-in-rust-to-create-a-timeout-for-a-thread-or-a-function
-                        let is_alive = scan_port::scan_port(&url_values, &url_port);
+                        let is_alive = scan_port::scan_port(&url_values, &domain.url_port);
                         //dbg!(is_alive);
                         if is_alive == false {
                             //print!("{} check down.\n", &vp);
                             return vp;
-                            //exit(0);
+                            //std::process::exit(0);
                         } else {
                             return "".to_string();
                         }
